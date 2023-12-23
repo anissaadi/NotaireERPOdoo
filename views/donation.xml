@@ -1,0 +1,15 @@
+<odoo>
+    <data>
+
+          <!--Donation action -->
+<record model="ir.actions.act_window" id="notaire.acte_donation_action">
+    <field name="name">Actes Donation</field>
+    <field name="res_model">notaire.acte</field>
+    <field name="view_mode">tree,form</field>
+    <field name="domain">[('categorie','=','donation')]</field>
+</record>
+
+
+    <menuitem name="Donation" id="notaire.donation_menu2" parent="notaire.acte_menu1" action="notaire.acte_donation_action"/>
+    </data>
+</odoo>

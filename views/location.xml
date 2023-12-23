@@ -1,0 +1,55 @@
+<odoo>
+    <data>
+
+        <!-- Add the display_name field to the model -->
+        <record model="ir.model" id="model_notaire_acte">
+            <field name="name">notaire.acte</field>
+            <field name="info">notaire.acte</field>
+            <field name="model">notaire.acte</field>
+            <field name="display_name">get_display_name</field>
+        </record>
+
+        <record model="ir.ui.view" id="notaire.tree_location">
+            <field name="name">Location</field>
+            <field name="model">notaire.acte</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <!-- Use the name field to display client_rec.nom and client_rec.prenom -->
+                    <field name="display_name"/>
+                </tree>
+            </field>
+        </record>
+
+
+          <record model="ir.ui.view" id="notaire.form_location">
+            <field name="name">Acte Location Form</field>
+            <field name="model">notaire.acte</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <!-- Grouping fields for better organization -->
+                        <group>
+                            <field name="categorie"/>
+                            <field name="client_rec"/>
+                        </group>
+                        <group>
+                            <field name="client_des"/>
+                            <field name="bien"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record model="ir.actions.act_window" id="notaire.acte_location_action">
+            <field name="name">Actes Location</field>
+            <field name="res_model">notaire.acte</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('categorie', '=', 'location')]</field>
+        </record>
+
+        <menuitem name="Location" id="notaire.location_menu2" parent="notaire.acte_menu1" action="notaire.acte_location_action"/>
+
+    </data>
+</odoo>

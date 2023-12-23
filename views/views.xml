@@ -1,0 +1,54 @@
+<odoo>
+  <data>
+
+    <record model="ir.ui.view" id="notaire.list">
+      <field name="name">notaire</field>
+      <field name="model">notaire.notaire</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="nom"/>
+          <field name="prenom"/>
+        </tree>
+      </field>
+    </record>
+
+
+
+    <record model="ir.actions.act_window" id="notaire.action_window">
+      <field name="name">notaire window</field>
+      <field name="res_model">notaire.notaire</field>
+      <field name="view_mode">tree,form</field>
+
+    </record>
+
+
+    <!--Menu de l'application-->
+    <menuitem name="notaire" id="notaire.menu_root"/>
+
+    <!--Menu Notaire-->
+    <menuitem name="Notaire" id="notaire.notaire_menu1" parent="notaire.menu_root" action="notaire.action_window"/>
+    <!--
+      Menu Acte
+    -->
+    <!--Menu Notaire-->
+    <menuitem name="Acte" id="notaire.acte_menu1" parent="notaire.menu_root" />
+
+
+  </data>
+
+</odoo>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

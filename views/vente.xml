@@ -1,0 +1,14 @@
+<odoo>
+    <data>
+                  <!--Vente action -->
+<record model="ir.actions.act_window" id="notaire.acte_vente_action">
+    <field name="name">Actes Vente</field>
+    <field name="res_model">notaire.acte</field>
+    <field name="view_mode">tree,form</field>
+    <field name="domain">[('categorie','=','vente')]</field>
+</record>
+
+
+    <menuitem name="Vente" id="notaire.vente_menu2" parent="notaire.acte_menu1" action="notaire.acte_vente_action"/>
+    </data>
+</odoo>
