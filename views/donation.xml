@@ -7,6 +7,7 @@
     <field name="res_model">notaire.acte</field>
     <field name="view_mode">tree,form</field>
     <field name="domain">[('categorie','=','donation')]</field>
+     <field name="context"> {'default_categorie':'donation'}</field>
 </record>
 
 

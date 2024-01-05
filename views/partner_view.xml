@@ -1,0 +1,14 @@
+<odoo>
+    <data>
+          <record model="ir.actions.act_window" id="notaire.client_view">
+            <field name="name">Client</field>
+            <field name="res_model">notaire.client</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+
+        <menuitem name="Clients" id="notaire.client_new_menu2" parent="notaire.menu_root" action="notaire.client_view"/>
+
+
+    </data>
+</odoo>

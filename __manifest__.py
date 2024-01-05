@@ -24,6 +24,7 @@
         # 'security/ir.model.access.csv',
         'views/views.xml',
         'views/location.xml',
+        'views/partner_view.xml',
         'views/vente.xml',
         'views/donation.xml',
         'views/templates.xml',

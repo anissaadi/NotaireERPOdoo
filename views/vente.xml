@@ -1,11 +1,12 @@
 <odoo>
     <data>
+
                   <!--Vente action -->
 <record model="ir.actions.act_window" id="notaire.acte_vente_action">
     <field name="name">Actes Vente</field>
-    <field name="res_model">notaire.acte</field>
+    <field name="res_model">notaire.vente</field>
     <field name="view_mode">tree,form</field>
-    <field name="domain">[('categorie','=','vente')]</field>
+    <field name="context"> {'default_categorie':'vente'}</field>
 </record>
 
 

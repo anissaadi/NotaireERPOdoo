@@ -2,94 +2,99 @@
 
 from odoo import models, fields,api
 from datetime import date
-
-class Notaire(models.Model):
-    _name="notaire.notaire"
-    _description = "Notaire model"
-
-    prenom= fields.Char(string="Prénom", required=True)
-    nom=fields.Char(string="Nom", required=True)
-    date_naissance= fields.Date(string="Date de Naissance", required=True)
-    adresse_complete= fields.Char(string="Adresse", required=True)
-    tel= fields.Integer(string="Numéro de téléphone")
-
-    email = fields.Char(string="Email")
-
-    # Calculer l'âge en fonction de la date de naissance
-    @api.depends('date_naissance')
-    def _compute_age(self):
-        today = date.today()
-        for notaire in self:
-            if notaire.date_naissance:
-                birth_date = fields.Date.from_string(notaire.date_naissance)
-                age = today.year - birth_date.year - ((today.month, today.day) < (birth_date.month, birth_date.day))
-                notaire.age = age
-            else:
-                notaire.age = 0
-
-    age = fields.Integer(string="Age", compute="_compute_age",store=True)
-
-
-
-class Client(models.Model):
+class ClientNotaire(models.Model):
     _name="notaire.client"
-    nom=fields.Char(string="Nom",required=True)
-    prenom=fields.Char(string="Prénom",required=True)
-    date_naissance = fields.Date(string="Date de Naissance")
-    lieux_naissance= fields.Char(string="Lieux de Naissance")
-    sequence_acte_naissance= fields.Integer(string="La séquence d'acte de naissance")
-    metier = fields.Char(string="Métier")
-    adresse= fields.Char(string="Adresse")
-    type_carte= fields.Char(string="type de la carte (permis, carte d'identité ...)")
-    num_carte = fields.Char(string="Numéro de la carte")
-    date_carte= fields.Date(string="Date de sortie de la carte")
-    lieu_carte = fields.Char(string="Lieu de sortie de la carte")
-    num_identite_nationale= fields.Char(string="Numéro d'identité nationale")
-    nationalite= fields.Char(string="Nationalité")
+    _description = "Client"
 
-    def __str__(self):
-        return self.nom + " " + self.prenom
+    nom = fields.Char("Nom",required=True)
+    prenom= fields.Char("Prénom",required=True)
+    lieu_de_naissance= fields.Char("Lieu de naissance",required=True)
+    date_de_naissance= fields.Date("Date de naissance", required=True)
+    numero_acte_naissance= fields.Integer("Numéro d'acte de naissance")
+    metier= fields.Char("Metier")
+    adresse= fields.Char("adresse", required=True)
+    numero_carte_identite = fields.Char("Numéro de carte d'idendité")
+    date_carte_identite = fields.Date("Date de sortie de la carte d'identité")
+    lieu_carte_identite = fields.Char("Lieu de sortie de la carte d'identité")
+    numero_identification_national= fields.Char("Numéro d'identification_national")
+    natioanalite = fields.Char("Nationalité", default="جزائرية")
+
+
+
 
 class Assurance(models.Model):
     _name="notaire.assurance"
     _description = 'Assurance de bien'
+    nom= fields.Char("Nom de propiétaire", required=True)
+    prenom = fields.Char("Prénom de propriétaire",required= True)
+    sexe = fields.Selection([('homme', 'Homme'), ('femme', 'Femme')])
 
-    agence = fields.Char(string="Nom d'agence", required=True)
+    agence = fields.Char(string="Nom d'agence d'assurance", required=True)
+    adresse_agence = fields.Char("Adresse de l'agence")
     date_assurance= fields.Date(string="Date d'assurance")
     type_assurance= fields.Char(string="Type assurance")
-
-    def __str__(self):
-        return self.agence
 
 
 
 class Bien(models.Model):
     _name="notaire.bien"
     _description = "Le Bien"
-
-    type = fields.Selection([("appartement", "Appartement"),("villa", "Villa"),("terrain","Terrain")],string="Type de Bien",required=True)
-    adresse= fields.Char(string="Adresse")
-    superficie = fields.Integer(string="Superficie")
     assurance = fields.Many2one("notaire.assurance",string="Assurance")
+    Position = fields.Char('Etage et appartement')
+    adresse = fields.Char("adresse", required=True)
+    pieces = fields.Char("pieces de l'appartement", required=True)
+    superficie = fields.Float("superficie")
 
-    def __str__(self):
-        return self.type + " en " + self.adresse
+class Appartement(models.Model):
+    _name="notaire.appartement"
+    _description = "Appartement"
+
+    Position = fields.Char('Etage et appartement')
+    adresse = fields.Char("adresse", required=True)
+    pieces = fields.Char("pieces de l'appartement", required=True)
+    superficie = fields.Float("superficie")
+
+class Villa(models.Model):
+    _name="notaire.appartement"
+    _description = "Appartement"
+
+    Position = fields.Char('Etage et appartement')
+    adresse = fields.Char("adresse", required=True)
+    pieces = fields.Char("pieces de l'appartement", required=True)
+    superficie = fields.Float("superficie")
 
 
 class Acte(models.Model):
     _name = "notaire.acte"
     _description = "Acte"
-    categorie = fields.Selection([("location", "Location"), ("vente", "Vente"), ("donation", "Donation")],
-                                 string="Categorie", required=True)
+    categorie = fields.Selection([("location", "Location"), ("vente", "Vente"), ("donation", "Donation"),("fredha","Fredha")],
+                                 string="Categorie",readonly=True)
+    bien = fields.Many2one("notaire.bien",string="Bien")
     client_rec = fields.Many2one("notaire.client",string="Client Receive")
     client_des = fields.Many2many("notaire.client",string="Client Destinataire")
-    bien = fields.Many2one("notaire.bien",string="Bien")
 
-    display_name = fields.Char(string="Nom/Prenom/adresse de client", compute="_compute_display_name", store=True)
 
-    def _compute_display_name(self):
-        for acte in self:
-            if acte.client_rec:
-                acte.display_name = f"{acte.client_rec.nom} {acte.client_rec.prenom} {acte.client_rec.adresse}"
-            else:
-                acte.display_name = "Pas de Nom"
+class Location(models.Model):
+    _inherit = "notaire.acte"
+    _name="notaire.location"
+    _description = "Location"
+
+    prix_lettre= fields.Char("prix en lettres", required=True)
+    prix_chiffre= fields.Char('Prix en chiffres', required=True)
+    duree_lettre = fields.Char("Durée de location en lettres")
+    duree_chiffre= fields.Char("Durée de location en chiffres")
+    debut = fields.Date("Date de debut de location")
+    fin = fields.Date('Date de fin de location')
+
+
+class Vente(models.Model):
+    _inherit = "notaire.acte"
+    _name="notaire.vente"
+    _description = "Vente"
+
+    prix_lettre= fields.Char("prix en lettres", required=True)
+    prix_chiffre= fields.Char('Prix en chiffres', required=True)
+    debut = fields.Date("Date de debut de vente")
+
+
+

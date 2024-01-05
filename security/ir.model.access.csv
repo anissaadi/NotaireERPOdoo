@@ -1,6 +1,8 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_notaire_notaire,notaire.notaire,model_notaire_notaire,,1,1,1,1
 access_notaire_acte,notaire.acte,model_notaire_acte,,1,1,1,1
 access_notaire_client,notaire.client,model_notaire_client,,1,1,1,1
 access_notaire_bien,notaire.bien,model_notaire_bien,,1,1,1,1
 access_notaire_assurance,notaire.assurance,model_notaire_assurance,,1,1,1,1
+access_notaire_location,notaire.location,model_notaire_location,,1,1,1,1
+access_notaire_vente,notaire.vente,model_notaire_vente,,1,1,1,1
+
